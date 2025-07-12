@@ -1,0 +1,75 @@
+[project]
+name = "prism-ai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.14.1",
+    "bcrypt==4.0.1",
+    "dependency-injector>=4.46.0",
+    "fastapi-pagination>=0.13.1",
+    "fastapi>=0.115.8",
+    "humanfriendly>=10.0",
+    "itsdangerous>=2.2.0",
+    "jinja2>=3.1.5",
+    "kubernetes>=32.0.1",
+    "neo4j>=5.28.1",
+    "openai>=1.65.2",
+    "passlib>=1.7.4",
+    "pre-commit>=4.1.0",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.10.6",
+    "pydantic-settings>=2.8.1",
+    "pyjwt>=2.10.1",
+    "python-multipart>=0.0.20",
+    "python-slugify>=8.0.4",
+    "redis>=5.2.1",
+    "slack-sdk>=3.34.0",
+    "sqlalchemy>=2.0.38",
+    "sqlmodel>=0.0.22",
+    "uvicorn>=0.34.0",
+    "watchfiles>=1.0.5",
+    "websockets>=15.0.1",
+    "httpx==0.28.1",
+    "anthropic>=0.54.0",
+    "pymongo>=4.13.1",
+    "pinecone[asyncio]>=7.2.0",
+    "pydantic-ai>=0.0.43",
+    "llama-index-core>=0.12.46",
+]
+
+[tool.mypy]
+plugins = [
+    "pydantic.mypy"
+]
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "dependency_injector.*",
+    "sqlmodel.*",
+    "pydantic_settings.*",
+    "fastapi.*",
+    "starlette.*",
+    "jwt.*",
+    "slugify.*",
+    "pinecone.*",
+    "slack_sdk.*",
+    "neo4j.*",
+    "llama_index.*",
+    "transformers.*",
+    "fastapi_pagination.*",
+    "pymongo.*",
+    "openai.*",
+    "jinja2.*",
+    "pydantic_ai.*"
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "alembic.*"
+ignore_errors = true
+
+[tool.ruff]
+exclude = ["alembic"]
