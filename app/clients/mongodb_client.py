@@ -7,6 +7,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, model_validator
 from pymongo import MongoClient
+from pymongo.collection import Collection
 from pymongo.server_api import ServerApi
 
 from app.db.models.choices import ChatRole
@@ -53,6 +54,9 @@ class Chat(BaseModel):
 
 class DocumentStoreClient:
     client: MongoClient
+    chats_collection: Collection
+    context_collection: Collection
+    messages_collection: Collection
 
     def __init__(
         self,
@@ -117,7 +121,8 @@ class DocumentStoreClient:
         chat_id: UUID,
     ) -> list[dict[str, Any]]:
         cursor = self.messages_collection.find(
-            {"user_id": str(user_id), "chat_id": str(chat_id)}
+            {"user_id": str(user_id), "chat_id": str(chat_id)},
+            projection={"_id": False},
         ).sort({"ts": 1})
         return [mes for mes in cursor]
 
@@ -133,7 +138,9 @@ class DocumentStoreClient:
         self.context_collection.insert_one(context)
 
     def get_chat(self, chat_id: UUID) -> Chat:
-        chats = self.chats_collection.find({"chat_id": str(chat_id)})
+        chats = self.chats_collection.find(
+            {"chat_id": str(chat_id)}, projection={"_id": False}
+        )
         chat_objects = [Chat(**chat_dict) for chat_dict in chats]
         if not chat_objects:
             raise Exception(f"Chat with ID {chat_id} not found!")
@@ -150,7 +157,9 @@ class DocumentStoreClient:
                 (datetime.now(timezone.utc) - timedelta(days=days)).timestamp()
             )
             query["ts"] = {"$gte": ts_lower_bound}
-        cursor = self.chats_collection.find(query).sort({"ts": -1})
+        cursor = self.chats_collection.find(query, projection={"_id": False}).sort(
+            {"ts": -1}
+        )
         return [convo for convo in cursor]
 
     @staticmethod
