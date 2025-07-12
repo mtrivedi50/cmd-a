@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-backend
+  labels:
+    app: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      containers:
+      - name: cmd-a-main
+        image: mtrivedi50/cmd-a
+        command: ['/bin/sh', 'app/run.sh'] # runs migrations and starts the server
+        ports:
+          - containerPort: 8000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"  # 1 vCPU
+            memory: "1Gi"
+        env:
+        - name: DB__NAME
+          value: postgres
+
+        - name: DB__USER
+          value: postgres
+
+        - name: DB__PASSWORD
+          value: postgres
+
+        - name: DB__HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmap
+              key: POSTGRES_DB_HOST
+
+        - name: REDIS__HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmap
+              key: REDIS_HOST
+
+        - name: MONGO__DRIVER
+          value: mongodb
+
+        - name: MONGO__USER
+          value: root
+
+        - name: MONGO__PASSWORD
+          value: example
+
+        - name: MONGO__HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmap
+              key: MONGO_HOST
+
+        - name: PINECONE__API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pinecone-credentials
+              key: api-key
+
+        - name: PINECONE__INDEX_HOST
+          valueFrom:
+            secretKeyRef:
+              name: pinecone-credentials
+              key: host
+
+        - name: NEO4J__DRIVER
+          value: neo4j
+
+        - name: NEO4J__USER
+          value: neo4j
+
+        - name: NEO4J__PASSWORD
+          value: password
+
+        - name: NEO4J__HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmap
+              key: NEO4J_HOST
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-backend-service
+spec:
+  selector:
+    app: application
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP

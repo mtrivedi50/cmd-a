@@ -1,0 +1,58 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: prism-ai
+build:
+  tagPolicy:
+    customTemplate:
+      template: >
+        {{- if eq .IMAGE_NAME "mtrivedi50/cmd-a-docling" -}}
+          {{.REPO}}:latest
+        {{- else -}}
+          {{.REPO}}:{{.DIGEST_HEX}}
+        {{- end }}
+  artifacts:
+    - image: mtrivedi50/cmd-a
+      docker:
+        dockerfile: Dockerfile.main
+        buildArgs:
+          MODE: dev
+      sync:
+        infer:
+          - 'app'
+    - image: mtrivedi50/cmd-a-frontend
+      docker:
+        dockerfile: Dockerfile.skaffold.frontend
+      sync:
+        infer:
+          - 'frontend'
+    - image: mtrivedi50/cmd-a-docling
+      docker:
+        dockerfile: Dockerfile.docling
+        buildArgs:
+          MODE: dev
+manifests:
+  rawYaml:
+    - manifests/dev/postgres*.yaml
+    - manifests/dev/*
+portForward:
+  - resourceType: service
+    resourceName: application-frontend-service
+    port: 5173
+    localPort: 5173
+  - resourceType: service
+    resourceName: application-backend-service
+    port: 8000
+    localPort: 8000
+  - resourceType: service
+    resourceName: mongo-express-service
+    port: 8081
+    localPort: 8081
+  - resourceType: service
+    resourceName: neo4j
+    port: 7474
+    localPort: 7474
+  - resourceType: service
+    resourceName: neo4j
+    port: 7687
+    localPort: 7687

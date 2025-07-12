@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  POSTGRES_DB_HOST: postgresdb-postgresql
+  REDIS_HOST: redis-master

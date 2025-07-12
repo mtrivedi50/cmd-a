@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-frontend
+  labels:
+    app: application-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-frontend
+  template:
+    metadata:
+      labels:
+        app: application-frontend
+    spec:
+      containers:
+      - name: cmd-a-frontend
+        image: mtrivedi50/cmd-a-frontend:1.0
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "50Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+        ports:
+          - containerPort: 80
+        imagePullPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-frontend-service
+spec:
+  selector:
+    app: application-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
