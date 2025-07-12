@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  POSTGRES_DB_HOST: postgresdb-postgresql
+  REDIS_HOST: redis
+  PINECONE_INDEX_HOST: pc-dense-index
+  MONGO_HOST: mongodb
+  NEO4J_HOST: neo4j

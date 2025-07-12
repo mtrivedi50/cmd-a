@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-backend
+  labels:
+    app: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      containers:
+      - name: cmd-a-main
+        image: mtrivedi50/cmd-a:1.0
+        command: ['/bin/sh', 'app/run.sh'] # runs migrations and starts the server
+        ports:
+          - containerPort: 8000
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"  # 1 vCPU
+            memory: "1Gi"
+        env:
+        - name: DB__NAME
+          value: postgres
+
+        - name: DB__USER
+          value: postgres
+
+        - name: DB__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresdb-postgresql
+              key: postgres-password
+
+        - name: DB__HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmap
+              key: POSTGRES_DB_HOST
+
+        - name: REDIS__HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-configmap
+              key: REDIS_HOST
+
+        - name: REDIS__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: redis-password
+
+        - name: MONGO__DRIVER
+          value: mongodb+srv
+
+        - name: MONGO__USER
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: user
+
+        - name: MONGO__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: password
+
+        - name: MONGO__HOST
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: host
+
+        - name: MONGO__OPTIONS
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: options
+
+        - name: PINECONE__API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pinecone-credentials
+              key: api-key
+
+        - name: PINECONE__INDEX_HOST
+          valueFrom:
+            secretKeyRef:
+              name: pinecone-credentials
+              key: host
+
+        - name: NEO4J__DRIVER
+          value: neo4j+s
+
+        - name: NEO4J__USER
+          valueFrom:
+            secretKeyRef:
+              name: "graphdb-credentials"
+              key: "user"
+
+        - name: NEO4J__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "graphdb-credentials"
+              key: "password"
+
+        - name: NEO4J__HOST
+          valueFrom:
+            secretKeyRef:
+              name: "graphdb-credentials"
+              key: "host"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-backend-service
+spec:
+  selector:
+    app: application
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP

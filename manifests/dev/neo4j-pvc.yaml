@@ -1,0 +1,31 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: neo4j-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 2Gi
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/neo4j-pv
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: neo4j-pvc
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  volumeName: neo4j-pv

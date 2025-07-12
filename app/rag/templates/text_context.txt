@@ -1,0 +1,9 @@
+[{{ citation_number }}]
+
+{{ content }}
+
+**ID:** {{ id }}
+**Source:** {{ source }}
+**Date:** {{ ts }}
+**Reactions:** {% if reactions %}{{ reactions }}{% else %}[]{% endif %}
+----------

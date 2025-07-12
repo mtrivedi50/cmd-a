@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cmd-a-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cmda.mihir-trivedi.com
+    http:
+      paths:
+      - path: /api/v1/
+        pathType: Prefix
+        backend:
+          service:
+            name: application-backend-service
+            port:
+              number: 8000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: application-frontend-service
+            port:
+              number: 80

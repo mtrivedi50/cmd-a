@@ -1,0 +1,12 @@
+Here is the relevant context for answering this question. This context was derived from a knowledge graph comprising on information from a variety of sources like Slack, Github, and so on.
+
+<context>
+{{ context }}
+</context>
+{% if people != "" %}
+Here are the relevant people (i.e., those who contributed to the discussions above):
+
+<people>
+{{ people }}
+</people>
+{% endif %}
