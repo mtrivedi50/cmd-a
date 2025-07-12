@@ -33,4 +33,4 @@ jobs:
           context: .
           push: true
           file: ./Dockerfile.docling
-          tags: mtrivedi50/cmd-a-docling:{{ github.ref_name }}
+          tags: mtrivedi50/cmd-a-docling:${{ github.ref_name }}
