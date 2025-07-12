@@ -1,0 +1,76 @@
+@font-face {
+  font-family: lato-regular;
+  src: url('assets/fonts/Lato/Lato-Regular.ttf');
+}
+
+@font-face {
+  font-family: lato-bold;
+  src: url('assets/fonts/Lato/Lato-Bold.ttf');
+}
+
+@font-face {
+  font-family: lato-light;
+  src: url('assets/fonts/Lato/Lato-Light.ttf');
+}
+
+@font-face {
+  font-family: roboto-mono;
+  src: url('assets/fonts/Roboto_Mono/static/RobotoMono-Regular.ttf');
+}
+
+#root {
+  padding: 2rem;
+  text-align: center;
+  width: 75%;
+  height: calc(100vh - 4rem);
+  margin: 0 auto;
+  font-family: inter;
+}
+
+.logo {
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+span .MuiStepLabel-label.MuiStepLabel-alternativeLabel {
+  margin-top: 0.5rem!important;
+}
+
+.inline-code {
+  background-color: #f4f4f4;
+  color: #d6336c;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  font-size: 0.95em;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
