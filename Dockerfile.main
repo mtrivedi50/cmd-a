@@ -1,0 +1,24 @@
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm
+
+RUN apt-get update \
+    && apt-get -y install ffmpeg libsm6 libxext6 \
+    && apt-get install -y libgl1 libglib2.0-0 curl wget git procps gcc \
+    && apt-get clean
+
+# Copy only files needed to install dependencies first
+WORKDIR cmda
+COPY ./pyproject.toml pyproject.toml
+COPY ./uv.lock uv.lock
+RUN uv sync
+
+# Copy all other files
+COPY ./alembic alembic
+COPY ./app app
+COPY ./.python-version .python-version
+COPY ./alembic.ini alembic.ini
+COPY ./Makefile Makefile
+
+# Development on Kubernetes
+ENV MODE=prod
+
+EXPOSE 8000
