@@ -80,8 +80,7 @@ export function IntegrationsDropdown(props: IntegrationsDropdownProps) {
                   )}
                   size="small"
                 />
-                {mapIntegrationTypeToIcon(integration.type, "16px", "16px") ||
-                  void 0}
+                {mapIntegrationTypeToIcon(integration.type, 16, 16) || void 0}
                 <Typography fontSize={"0.875rem"}>
                   {integration.name}
                 </Typography>

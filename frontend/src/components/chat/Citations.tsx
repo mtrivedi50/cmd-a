@@ -20,17 +20,23 @@ export default function Citations(props: CitationProps) {
           <Link rel="noopener" href={c.citation.url} target="_blank">
             <Chip
               label={
-                <Stack direction="row" spacing={2}>
-                  <Typography variant="body2">{c.citation_number}</Typography>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <Typography variant="body2" fontWeight={500}>
+                    {"[" + c.citation_number + "]"}
+                  </Typography>
                   <Stack
                     direction="row"
                     spacing={2}
-                    sx={{ alignItems: "center" }}
+                    sx={{ alignItems: "center", justifyContent: "center" }}
                   >
                     {mapIntegrationTypeToIcon(
                       c.citation.source as IntegrationType,
-                      "20px",
-                      "20px",
+                      20,
+                      20,
                     )}
                     <Typography variant="body2">
                       {c.citation.display_name}

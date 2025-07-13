@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import IntegrationSection from "@/components/integrations/add_integrations/IntegrationSection";
-import { NotionIcon, SlackIcon } from "@/components/integrations/Icons";
+import { SlackIcon } from "@/components/integrations/Icons";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
 export default function NoIntegrations() {
@@ -30,21 +30,15 @@ export default function NoIntegrations() {
           cardDetails={[
             {
               title: "Slack",
-              icon: <SlackIcon width="32" height="32" />,
+              icon: <SlackIcon width={28} height={28} />,
               disabled: false,
               nav: "add/slack",
             },
             {
               title: "Github",
-              icon: <GitHubIcon width="32" height="32" />,
+              icon: <GitHubIcon width={28} height={28} />,
               disabled: false,
               nav: "add/github",
-            },
-            {
-              title: "Notion",
-              icon: <NotionIcon width="32" height="32" />,
-              disabled: false,
-              nav: "add/notion",
             },
           ]}
           justifyContent="center"

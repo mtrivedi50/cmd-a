@@ -26,19 +26,7 @@ export default function AddIntegrations() {
         cardDetails={[
           {
             title: "Slack",
-            icon: <SlackIcon width="32" height="32" />,
-            disabled: false,
-            nav: "slack",
-          },
-          {
-            title: "Notion",
-            icon: <NotionIcon width="32" height="32" />,
-            disabled: false,
-            nav: "slack",
-          },
-          {
-            title: "JIRA",
-            icon: <JiraIcon width="32" height="32" />,
+            icon: <SlackIcon width={28} height={28} />,
             disabled: false,
             nav: "slack",
           },
@@ -49,20 +37,32 @@ export default function AddIntegrations() {
             nav: "github",
           },
           {
+            title: "Notion",
+            icon: <NotionIcon width={28} height={28} />,
+            disabled: true,
+            nav: "slack",
+          },
+          {
+            title: "JIRA",
+            icon: <JiraIcon width={28} height={28} />,
+            disabled: true,
+            nav: "slack",
+          },
+          {
             title: "Google Drive",
-            icon: <GoogleDriveIcon width="32" height="32" />,
+            icon: <GoogleDriveIcon width={28} height={28} />,
             disabled: true,
             nav: "slack",
           },
           {
             title: "Dropbox",
-            icon: <DropboxIcon width="32" height="32" />,
+            icon: <DropboxIcon width={28} height={28} />,
             disabled: true,
             nav: "slack",
           },
           {
             title: "Zendesk",
-            icon: <ZendeskIcon width="32" height="32" />,
+            icon: <ZendeskIcon width={28} height={28} />,
             disabled: true,
             nav: "slack",
           },

@@ -96,6 +96,7 @@ class Database:
         db_type: type[T],
         where_conditions: dict[str, Any] | None = None,
         session: Session | None = None,
+        order_by: list[str] | None = None,
     ) -> list[T]:
         """
         Get all database objects that match the criteria defined in the statement.
@@ -104,6 +105,8 @@ class Database:
         for col, value in (where_conditions or {}).items():
             where_bool_clause_list.append(getattr(db_type, col) == value)
         stmt = select(db_type).where(*where_bool_clause_list)
+        if order_by:
+            stmt = stmt.order_by(*[getattr(db_type, col) for col in order_by])
         if session:
             res = session.execute(stmt)
             return [row._asdict()[db_type.__name__] for row in res.all()]
