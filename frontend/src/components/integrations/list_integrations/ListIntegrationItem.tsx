@@ -42,15 +42,13 @@ function IntegrationIconAndType({
   integrationName: string;
 }) {
   return (
-    <Stack>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ height: "100%", alignItems: "center", justifyContent: "start" }}
-      >
-        {mapIntegrationTypeToIcon(integrationType, "32", "32")}
-        <Typography variant="h4">{integrationName}</Typography>
-      </Stack>
+    <Stack
+      direction="row"
+      spacing={4}
+      sx={{ height: "100%", alignItems: "center", justifyContent: "start" }}
+    >
+      {mapIntegrationTypeToIcon(integrationType, 28, 28)}
+      <Typography variant="h4">{integrationName}</Typography>
     </Stack>
   );
 }
@@ -268,11 +266,15 @@ export default function ListIntegrationItem({
               direction="row"
               sx={{ pr: 8, width: "100%", justifyContent: "space-between" }}
             >
-              <IntegrationIconAndType
-                integrationType={integrationData.type}
-                integrationName={integrationData.name}
-              />
-              <IntegrationDetailRow integrationDetails={integrationDetails} />
+              <div style={{ width: "40%" }}>
+                <IntegrationIconAndType
+                  integrationType={integrationData.type}
+                  integrationName={integrationData.name}
+                />
+              </div>
+              <div style={{ width: "60%" }}>
+                <IntegrationDetailRow integrationDetails={integrationDetails} />
+              </div>
             </Stack>
           </AccordionSummary>
           <AccordionDetails sx={{ px: 0 }}>

@@ -104,8 +104,8 @@ export default function SlackIntegrationForm(props: SlackIntegrationFormProps) {
         sx={{ mb: 8, width: props.initialData === undefined ? "50%" : "70%" }}
       >
         {/* Header */}
-        <Stack direction="row" spacing={1}>
-          <SlackIcon width="32" height="32" />
+        <Stack direction="row" spacing={4}>
+          <SlackIcon width={32} height={32} />
           <Typography variant="h3">Slack</Typography>
         </Stack>
 

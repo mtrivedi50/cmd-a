@@ -4,7 +4,7 @@ import logging
 from typing import Any
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, BackgroundTasks, Depends, WebSocket, WebSocketDisconnect
 from fastapi.exceptions import HTTPException
 from fastapi_pagination import Page
 from kubernetes import config
@@ -71,6 +71,7 @@ async def list_integrations(
         where_conditions={
             "user": user,
         },
+        order_by=["created_at"],
     )
 
 
@@ -205,8 +206,9 @@ async def update_integration(
 
 @router.delete("/integration/{integration_id}", tags=["Integration"])
 @inject
-async def delete_integration(
+def delete_integration(
     integration_id: str,
+    background_tasks: BackgroundTasks,
     user: User = Depends(get_current_user),
     db: Database = Depends(Provide[Container.database]),
     graph_client: GraphClient = Depends(Provide[Container.graph_client]),
@@ -250,23 +252,28 @@ async def delete_integration(
             # cascade relationship.
 
         # Delete all jobs
-        k8s_operator.async_delete_jobs(
+        background_tasks.add_task(
+            k8s_operator.async_delete_jobs,
             namespace=user.namespace,
             pattern=f"{integration.type}-processor",
         )
-        k8s_operator.async_delete_cron_jobs(
+        background_tasks.add_task(
+            k8s_operator.async_delete_cron_jobs,
             namespace=user.namespace,
             pattern=f"{integration.type}-processor",
         )
-        k8s_operator.async_delete_pods(
+        background_tasks.add_task(
+            k8s_operator.async_delete_pods,
             namespace=user.namespace,
             pattern=f"{integration.type}-processor",
         )
 
         # Delete graph and vector data. This is asynchornous
-        await graph_client.delete_integration(integration_id)
-        await vector_db.delete_integration(
-            namespace=user.namespace, integration_id=integration_id
+        background_tasks.add_task(graph_client.delete_integration, integration_id)
+        background_tasks.add_task(
+            vector_db.delete_integration,
+            namespace=user.namespace,
+            integration_id=integration_id,
         )
 
         db.delete(integration)

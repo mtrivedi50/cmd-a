@@ -34,8 +34,8 @@ export const chatModelProviderIcon = (
 
 export const mapIntegrationTypeToIcon = (
   integrationType: IntegrationType,
-  width: string,
-  height: string,
+  width: number,
+  height: number,
 ): React.ReactElement =>
   integrationType === IntegrationType.SLACK ? (
     <SlackIcon width={width} height={height} />
