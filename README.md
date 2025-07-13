@@ -18,7 +18,7 @@ The following integrations are supported:
 - Github
 
 ## Demo
-[[ TODO ]]
+![Demo](docs/demo.gif)
 
 ## Tech Stack
 
@@ -64,8 +64,9 @@ The following diagram shows how cmd+A streams chats to the UI. Chat information 
 - Messages (both the user's initial query and the assistant's response) are stored in Redis for quick, immediate retrieval and MongoDb for longer-term storage. Chats in Redis expire 1 day after the _latest_ message in that chat.
 
 ## Improvements
-
 - Tests, tests, tests! Also, graceful error handling throughout.
+- Ordered citations (right now, citations may not be referenced sequentially)
+- Add "Thinking..." loading state after user sends a query
 - Remove duplicate context
 - Add feedback mechanisms in the PromptBuilder and GraphRAG agents
 - Provide tools to agents for additional context retrieval and processing
