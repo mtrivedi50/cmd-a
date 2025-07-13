@@ -4,3 +4,4 @@
 .ruff_cache
 backend/.db.sqlite3
 frontend/node_modules/
+docs
