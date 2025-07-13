@@ -10,10 +10,11 @@ export function SlackIcon({
   return (
     <SvgIcon>
       <svg
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: width, height: height }}
       >
         <path
           d="M23.5002 11.9998C24.8808 11.9998 26 10.8806 26 9.5C26 8.11941 24.8807 7.00022 23.5001 7.00022C22.1194 7.00022 21 8.1195 21 9.50021V11.9998H23.5002ZM16.5 11.9998C17.8807 11.9998 19 10.8805 19 9.49978V2.50021C19 1.1195 17.8807 0.000213623 16.5 0.000213623C15.1193 0.000213623 14 1.1195 14 2.50021V9.49978C14 10.8805 15.1193 11.9998 16.5 11.9998Z"
@@ -40,10 +41,11 @@ export function JiraIcon({ width, height }: { width: string; height: string }) {
   return (
     <SvgIcon>
       <svg
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: width, height: height }}
       >
         <path
           d="M27.6647 13.2165L15.2075 1.1679L14 0L4.62269 9.06969L0.33526 13.2165C-0.111753 13.6494 -0.111753 14.3506 0.33526 14.7835L8.90247 23.0697L14 28L23.3773 18.9303L23.5225 18.7899L27.6647 14.7835C28.1118 14.3506 28.1118 13.6494 27.6647 13.2165ZM14 18.1394L9.72022 14L14 9.86061L18.2798 14L14 18.1394Z"
@@ -100,10 +102,11 @@ export function NotionIcon({
   return (
     <SvgIcon>
       <svg
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: width, height: height }}
       >
         <path
           fillRule="evenodd"
@@ -136,10 +139,11 @@ export function GoogleDriveIcon({
   return (
     <SvgIcon>
       <svg
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: width, height: height }}
       >
         <path
           d="M2 11.9556C2 8.47078 2 6.7284 2.67818 5.39739C3.27473 4.22661 4.22661 3.27473 5.39739 2.67818C6.7284 2 8.47078 2 11.9556 2H20.0444C23.5292 2 25.2716 2 26.6026 2.67818C27.7734 3.27473 28.7253 4.22661 29.3218 5.39739C30 6.7284 30 8.47078 30 11.9556V20.0444C30 23.5292 30 25.2716 29.3218 26.6026C28.7253 27.7734 27.7734 28.7253 26.6026 29.3218C25.2716 30 23.5292 30 20.0444 30H11.9556C8.47078 30 6.7284 30 5.39739 29.3218C4.22661 28.7253 3.27473 27.7734 2.67818 26.6026C2 25.2716 2 23.5292 2 20.0444V11.9556Z"
@@ -184,10 +188,11 @@ export function DropboxIcon({
   return (
     <SvgIcon>
       <svg
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: width, height: height }}
       >
         <circle cx="16" cy="16" r="14" fill="#0F287F" />
         <path
@@ -212,10 +217,11 @@ export function ZendeskIcon({
   return (
     <SvgIcon>
       <svg
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: width, height: height }}
       >
         <path d="M17 5L17 20.7143L30 5H17Z" fill="#07363D" />
         <path
@@ -244,7 +250,8 @@ export function SlackChannelIcon({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox={`0 0 ${width} ${height}`}
-        style={{ width: width + "px", height: height + "px" }}
+        width={width + "px"}
+        height={height + "px"}
       >
         <path
           fill="#FFB300"
@@ -283,7 +290,8 @@ export function GithubRepositoryIcon({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"
-        style={{ width: width + "px", height: height + "px" }}
+        width={width + "px"}
+        height={height + "px"}
       >
         <g fill="#000000">
           <path
