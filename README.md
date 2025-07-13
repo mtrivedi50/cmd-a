@@ -1,39 +1,39 @@
 # cmd+A: Chat with your internal tools
 
-**WARNING: the demo website https://cmda.mihir-trivedi.com is NOT intended for production use. BYOC production deployment instructions are located in `manifests/`.**
+**WARNING: this repo and the corresponding demo website https://cmda.mihir-trivedi.com are NOT intended for production use.**
 
 ## Introduction
 cmd+A enables users "chat" with their internal stores of knowledge via GraphRAG. Users simplify specify their source connections, and cmd+A automatically:
 - Sets up workers to periodically parse content from the source (including OCR for file attachments)
 - Sets up a knowledge graph to store similar documents together (e.g., `file X -- lives in --> Slack message Y`, `Slack message Y -- reply to --> Slack message Z`, and so forth).
-- Performs entity resolution to link different sources together (e.g., `Slack message Z -- mentions --> Github PR A`).
+- Performs entity resolution to link different integrations together (e.g., `Slack message Z -- mentions --> Github PR A`).
 
 Additional cmd+A features include:
 - Semantic search + graph traversal in response to a user's query.
 - Multiple chat model providers (OpenAI, Anthropic, Gemini, Groq, Mistral)
 - Source attribution
 
-The following sources are supported:
+The following integrations are supported:
 - Slack
 - Github
-- Notion
 
 ## Demo
 [[ TODO ]]
 
 ## Tech Stack
 
+- Development: Kubernetes, skaffold
 - Backend: FastAPI (HTTP + Websockets), SQLModel, Alembic, PydanticAI, MongoDb, Redis, Pinecone, Neo4J
 - Frontend: Vite, React + Typescript, nginx
+- Deployment: Docker, DigitalOcean, Github Actions
 
 ## Architecture
 
 cmd+A is deployed on a Kubernetes cluster. Tenant resources are separated via namespaces.
 
+### Integrations
 
-### Sources
-
-The following diagram shows how cmd+A processes information from sources (using GitHub as an example.)
+The following diagram shows how cmd+A processes information from integrations (using GitHub as an example.)
 
 <img src="docs/cmd-a-architecture.jpg" alt="drawing" width="1000"/>
 
@@ -44,27 +44,30 @@ The following diagram shows how cmd+A processes information from sources (using 
 - Embeddings are stored in Pinecone, and graph relationships are stored in Neo4J.
 - Processing jobs are also responsible for performing entity resolution.
 
-### Chats
+### Hybrid Search
 
 The following diagram shows how cmd+A streams chats to the UI. Chat information is communicated via a Websocket.
 
-<img src="docs/chat-websocket.jpg" alt="drawing" width="1000"/>
+<img src="docs/hybrid-search.jpg" alt="drawing" width="1000"/>
 
-- When the user asks a new query, we instantiate a PydanticAI agent using their selected chat model.
-- The PydanticAI agent first takes the user's chat history and current query and generates a more complete and thorough user prompt.
-- This detailed query is used for hybrid search:
-  - cmd+A embeds the detailed query and search across Pinecone for semantically similar discussions.
+- When the user asks a new query, grab the chat history from Redis. If there is a cache miss, grab the chat history from MongoDb.
+- Pass this chat history to a PromptBuilder agent. This generates a more complete and thorough user prompt.
+- Then, perform hybrid search:
+  - Embed the detailed query and search across Pinecone for semantically similar discussions.
   - Given the retrieved messages, traverse the graph to:
       - Find related threads and replies.
       - Identify who was involved (helpful for escalating recurring issues).
       - Retrieve attachments/code snippets shared in those discussions.
-      - Connect with external sources like JIRA or Notion if linked.
-- The PydanticAI agent uses all of the context to generate a response. This response is streamed, and individual tokens are transmitted to the UI via the Websocket.
+      - Connect with external integrations if linked.
+- Pass the chat history and context to the LLM, along with the detailed user query. This response is streamed, and individual tokens are transmitted to the UI via the Websocket.
 - Once the response has finished generating, citations are transmitted to the UI via the Websocket.
 - Messages (both the user's initial query and the assistant's response) are stored in Redis for quick, immediate retrieval and MongoDb for longer-term storage. Chats in Redis expire 1 day after the _latest_ message in that chat.
 
 ## Improvements
 
-- Replace Redis queue with Kafka. Kafka topics are partitioned by tenant ID, and workers consume from the Kafka topic.
+- Tests, tests, tests! Also, graceful error handling throughout.
 - Remove duplicate context
-- Add feedback mechanism in the GraphRAG agent
+- Add feedback mechanisms in the PromptBuilder and GraphRAG agents
+- Provide tools to agents for additional context retrieval and processing
+- Tenant specific configurations (resources, processing jobs, etc.)
+- Replace Redis queue with Kafka. Kafka topics can be partitioned by tenant ID, and workers consume from the Kafka topic.
