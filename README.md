@@ -69,5 +69,3 @@ The following diagram shows how cmd+A streams chats to the UI. Chat information 
 - Remove duplicate context
 - Add feedback mechanisms in the PromptBuilder and GraphRAG agents
 - Provide tools to agents for additional context retrieval and processing
-- Tenant specific configurations (resources, processing jobs, etc.)
-- Replace Redis queue with Kafka. Kafka topics can be partitioned by tenant ID, and workers consume from the Kafka topic.
