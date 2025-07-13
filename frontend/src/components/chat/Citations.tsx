@@ -22,7 +22,11 @@ export default function Citations(props: CitationProps) {
               label={
                 <Stack direction="row" spacing={2}>
                   <Typography variant="body2">{c.citation_number}</Typography>
-                  <Stack direction="row" spacing={1}>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{ alignItems: "center" }}
+                  >
                     {mapIntegrationTypeToIcon(
                       c.citation.source as IntegrationType,
                       "20px",
