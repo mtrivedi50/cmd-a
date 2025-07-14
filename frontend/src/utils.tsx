@@ -71,3 +71,14 @@ export const getBackendBaseUrl = async () => {
     console.warn(`Failed to load runtime config: ${error}`);
   }
 };
+
+export const getParentGroupDisplayName = (type: IntegrationType) =>
+  type === IntegrationType.SLACK
+    ? "Channels"
+    : type === IntegrationType.GITHUB
+      ? "Repositories"
+      : type === IntegrationType.JIRA
+        ? "Epics"
+        : type === IntegrationType.NOTION
+          ? "Pages"
+          : "Parent Groups";

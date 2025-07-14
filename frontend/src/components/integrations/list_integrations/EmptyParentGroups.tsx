@@ -7,22 +7,14 @@ import {
   GithubRepositoryIcon,
   SlackChannelIcon,
 } from "@/components/integrations/Icons";
+import { getParentGroupDisplayName } from "@/utils";
 
 interface EmptyParentGroupsProps {
   type: IntegrationType;
 }
 
 export default function EmptyParentGroups(props: EmptyParentGroupsProps) {
-  const properCaseTitle =
-    props.type === IntegrationType.SLACK
-      ? "Channels"
-      : props.type === IntegrationType.GITHUB
-        ? "Repositories"
-        : props.type === IntegrationType.JIRA
-          ? "Epics"
-          : props.type === IntegrationType.NOTION
-            ? "Pages"
-            : "Parent Groups";
+  const properCaseTitle = getParentGroupDisplayName(props.type);
 
   const parentGroupIcon =
     props.type === IntegrationType.SLACK ? (
@@ -46,7 +38,7 @@ export default function EmptyParentGroups(props: EmptyParentGroupsProps) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        py: 4,
+        py: 8,
         px: 2,
         textAlign: "center",
       }}

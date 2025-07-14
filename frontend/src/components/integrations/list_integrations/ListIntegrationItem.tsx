@@ -28,6 +28,7 @@ import EmptyParentGroups from "@/components/integrations/list_integrations/Empty
 import { IntegrationActionsMenu } from "@/components/integrations/list_integrations/IntegrationActionsMenu";
 import EditIntegrationModal from "@/components/integrations/forms/EditIntegrationModal";
 import { mapIntegrationTypeToIcon } from "@/utils";
+import NoParentGroupsError from "@/components/integrations/list_integrations/NoParentGroupsError";
 
 interface IntegrationDetail {
   title: string;
@@ -139,7 +140,7 @@ export default function ListIntegrationItem({
 }) {
   const [expanded, setExpanded] = useState(false);
   const [currentIntegrationParentGroups, setCurrentIntegrationParentGroups] =
-    useState<ParentGroupDataResponseModel[]>([]);
+    useState<ParentGroupDataResponseModel[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -159,7 +160,7 @@ export default function ListIntegrationItem({
     isExpanded: boolean,
   ) => {
     setExpanded(isExpanded);
-    if (isExpanded && currentIntegrationParentGroups.length === 0) {
+    if (isExpanded && currentIntegrationParentGroups?.length === 0) {
       await fetchParentGroups(1);
     }
   };
@@ -189,6 +190,7 @@ export default function ListIntegrationItem({
     _event: React.ChangeEvent<unknown>,
     value: number,
   ) => {
+    setIsLoading(true);
     fetchParentGroups(value);
   };
 
@@ -286,6 +288,8 @@ export default function ListIntegrationItem({
                   <ParentGroupSkeletonRow />
                 </Stack>
               </Box>
+            ) : currentIntegrationParentGroups === null ? (
+              <NoParentGroupsError type={integrationData.type} />
             ) : currentIntegrationParentGroups.length > 0 ? (
               currentIntegrationParentGroups.map((group) => (
                 <Box
