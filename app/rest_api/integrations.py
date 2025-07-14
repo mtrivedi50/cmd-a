@@ -6,7 +6,6 @@ from typing import Any
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, BackgroundTasks, Depends, WebSocket, WebSocketDisconnect
 from fastapi.exceptions import HTTPException
-from fastapi_pagination import Page
 from kubernetes import config
 from starlette.status import HTTP_202_ACCEPTED
 
@@ -286,17 +285,21 @@ def delete_integration(
 @router.get(
     "/parent-group/{integration_id}",
     tags=["Integration"],
-    response_model=Page[ParentGroupData],
+    response_model=list[ParentGroupData],
 )
 @inject
 async def get_parent_groups(
     integration_id: str,
+    page: int,
+    size: int,
     user: User = Depends(get_current_user),
     db: Database = Depends(Provide[Container.database]),
-) -> Page[Any]:
+) -> list[Any]:
     return db.paginated_objects(
         db_type=ParentGroupData,
         order_by=["name"],
+        page=page,
+        size=size,
         where_conditions={
             "integration_id": integration_id,
         },

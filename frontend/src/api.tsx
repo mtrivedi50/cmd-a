@@ -7,7 +7,7 @@ export const TOKEN_DURATION = 24 * 60 * 60 * 1000;
 const baseUrl = await getBackendBaseUrl();
 const api = axios.create({
   baseURL: baseUrl,
-  timeout: 30000,
+  timeout: 10000,
   headers: {},
 });
 

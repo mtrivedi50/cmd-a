@@ -27,7 +27,7 @@ import { useIntegrations } from "@/contexts/IntegrationContext";
 import EmptyParentGroups from "@/components/integrations/list_integrations/EmptyParentGroups";
 import { IntegrationActionsMenu } from "@/components/integrations/list_integrations/IntegrationActionsMenu";
 import EditIntegrationModal from "@/components/integrations/forms/EditIntegrationModal";
-import { mapIntegrationTypeToIcon } from "@/utils";
+import { delay, mapIntegrationTypeToIcon } from "@/utils";
 import NoParentGroupsError from "@/components/integrations/list_integrations/NoParentGroupsError";
 
 interface IntegrationDetail {
@@ -160,8 +160,8 @@ export default function ListIntegrationItem({
     isExpanded: boolean,
   ) => {
     setExpanded(isExpanded);
-    if (isExpanded && currentIntegrationParentGroups?.length === 0) {
-      await fetchParentGroups(1);
+    if (isExpanded && (currentIntegrationParentGroups || []).length === 0) {
+      await fetchParentGroups(page);
     }
   };
 
@@ -176,6 +176,7 @@ export default function ListIntegrationItem({
           },
         },
       );
+      await delay(1000);
       setCurrentIntegrationParentGroups(response.data.items);
       setTotalPages(Math.ceil(response.data.total / pageSize));
       setPage(pageNumber);
@@ -191,6 +192,7 @@ export default function ListIntegrationItem({
     value: number,
   ) => {
     setIsLoading(true);
+    setCurrentIntegrationParentGroups(null);
     fetchParentGroups(value);
   };
 
@@ -283,6 +285,8 @@ export default function ListIntegrationItem({
             {isLoading ? (
               <Box sx={{ p: 2, width: "100%" }}>
                 <Stack spacing={2}>
+                  <ParentGroupSkeletonRow />
+                  <ParentGroupSkeletonRow />
                   <ParentGroupSkeletonRow />
                   <ParentGroupSkeletonRow />
                   <ParentGroupSkeletonRow />
