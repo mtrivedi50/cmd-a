@@ -4,6 +4,7 @@ from typing import Any, TypeVar
 
 from fastapi import HTTPException
 from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy import orm
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
@@ -72,8 +73,6 @@ class Database:
         self,
         db_type: type[T],
         order_by: list[str],
-        page: int,
-        size: int,
         where_conditions: dict[str, Any] | None = None,
         session: Session | None = None,
     ) -> Page[T]:
@@ -84,17 +83,13 @@ class Database:
             select(db_type)
             .where(*where_bool_clause_list)
             .order_by(*[getattr(db_type, col) for col in order_by])
-            .limit(size)
-            .offset(size * (page - 1))
         )
         if session:
-            res = session.execute(stmt)
-            return [row._asdict()[db_type.__name__] for row in res.all()]
+            return paginate(session, stmt)
 
         # Otherwise, create a session and execute
         with self.session() as new_session:
-            res = new_session.execute(stmt)
-            return [row._asdict()[db_type.__name__] for row in res.all()]
+            return paginate(new_session, stmt)
 
     def all_objects(
         self,
