@@ -6,7 +6,8 @@
 
 > [!IMPORTANT]
 > - This repo and the corresponding demo website https://cmda.mihir-trivedi.com are **NOT intended for production use.**
-> - This project is primarily for learning purposes. I am very open to feedback! Please open an PR or create an issue if there's something you see that can be improved.
+> - This project is primarily for learning purposes. I fully acknowledge that Kubernetes is overkill for such a simple app!
+> - I am very open to feedback! Please open an PR or create an issue if there's something you see that can be improved.
 
 ## Introduction
 cmd+A enables users "chat" with their internal stores of knowledge via GraphRAG. Users simplify specify their source connections, and cmd+A automatically:
