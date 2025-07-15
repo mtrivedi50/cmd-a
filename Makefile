@@ -24,7 +24,7 @@ setup-precommit-hooks:
 	rm .husky/pre-commit.bak
 	git config core.hooksPath .husky/_
 
-setup: install-deps setup-precommit-hooks
+setup-dev-env: install-deps setup-precommit-hooks
 
 
 ##############
@@ -43,16 +43,9 @@ alembic-migrate:
 ###############
 
 setup-skaffold-cluster:
+	brew install minikube skaffold
 	minikube start --cpus 4 --memory 4096;
 	skaffold config set --global local-cluster true;
-
-
-use-skaffold-docker-context:
-	eval $(minikube docker-env)
-
-
-dev: use-skaffold-docker-context
-	skaffold dev
 
 
 ######################

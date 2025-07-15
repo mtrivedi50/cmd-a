@@ -1,6 +1,9 @@
 # cmd+A: Chat with your internal tools
 
-**WARNING: this repo and the corresponding demo website https://cmda.mihir-trivedi.com are NOT intended for production use.**
+> [!IMPORTANT]
+> - This repo and the corresponding demo website https://cmda.mihir-trivedi.com are **NOT intended for production use.**
+> - This project is primarily for learning purposes. I am very open to feedback! Please open an PR or create an issue if there's something you see that can be improved.
+
 
 ## Introduction
 cmd+A enables users "chat" with their internal stores of knowledge via GraphRAG. Users simplify specify their source connections, and cmd+A automatically:
@@ -22,10 +25,25 @@ The following integrations are supported:
 
 ## Tech Stack
 
-- Development: Kubernetes, skaffold
+- Development: minikube, skaffold
 - Backend: FastAPI (HTTP + Websockets), SQLModel, Alembic, PydanticAI, MongoDb, Redis, Pinecone, Neo4J
 - Frontend: Vite, React + Typescript, nginx
-- Deployment: Docker, DigitalOcean, Github Actions
+- Deployment: Docker, DigitalOcean Kubernetes, Github Actions
+
+## Local development
+
+cmd+A was developed using minikube and skaffold. The following make targets can be used to setup your local development environment:
+```
+make setup-dev-env
+make setup-skaffold-cluster
+skaffold dev
+```
+
+Skaffold automatically handles port-forwarding for resources exposed within the minikube cluster:
+- API: `http://localhost:8000`
+- Frontend: `http://localhost:5173`
+- Mongo Express: `http://localhost:8081` (username `admin`, password `pass`)
+- Neo4J Database: `http://localhost:7474` (usename `neo4j`, password `password`)
 
 ## Architecture
 
